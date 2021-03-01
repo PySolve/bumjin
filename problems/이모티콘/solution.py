@@ -1,24 +1,42 @@
-def construct_dp(current):
-    current_count = min(store_dp[current])
-    searchDouble, searchMinus = False, False
-    if 0< current <= N:
-        if store_dp[current*2][0]==MAX:
-            searchDouble = True 
-        store_dp[current*2][0] = min(store_dp[current][0], current_count+2)
+from collections import deque 
 
-        if store_dp[current-1][1]==MAX:
-            searchMinus = True 
-        store_dp[current-1][1] = min(store_dp[current-1][1], current_count+1)
-        if searchDouble:
-            construct_dp(current*2)
-        if searchMinus:
-            construct_dp(current-1)
-
+def bfs(target):
+    queue = deque([(1,0,0)])
+    visited = [False for i in range(target*2+1)]
+    stacked = [False for i in range(target*2+1)]
+    while True :
+        value, clip, time = queue.popleft()
+        visited[value] = True
+        if value == target:
+            return time 
+        else:
+            if value+clip<target*2 and not visited[value+clip] :
+                queue.append((value+clip, clip, time+1))
+            if not stacked[value]:
+                queue.append((value, value, time+1))
+                stacked[value] =True
+            if value>1 and not visited[value-1]:
+                queue.append((value-1, clip, time+1))
 
 N = int(input())
-MAX = 10000
-store_dp = [[MAX,MAX] for i in range(N*2+1)]
-store_dp[1] = [0,0]
-construct_dp(1)
-print(min(store_dp[N]))
-print(store_dp)
+print(bfs(N))
+
+
+
+'''
+## Base code. But OOM error
+from collections import deque 
+
+def bfs(target):
+    queue = deque([(1,0,0)])
+    visited = [False for i in range(target*2+1)]
+    stacked = [False for i in range(target*2+1)]
+    while True :
+        value, clip, time = queue.popleft()
+        if value == target:
+            return time 
+        else:
+            queue.append((value+clip, clip, time+1))
+            queue.append((value, value, time+1))
+            queue.append((value-1, clip, time+1)
+'''
