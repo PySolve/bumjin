@@ -22,7 +22,6 @@ N = int(input())
 print(bfs(N))
 
 
-
 '''
 ## Base code. But OOM error
 from collections import deque 
