@@ -34,17 +34,17 @@
 
 
 ```python
+# Out of Memory Issue
 from collections import deque 
 
 def bfs(target):
     queue = deque([(1,0,0)])
-    visited = [False for i in range(target*2+1)]
-    stacked = [False for i in range(target*2+1)]
     while True :
         value, clip, time = queue.popleft()
         if value == target:
             return time 
         else:
+            # === Three kind of operations === 
             queue.append((value+clip, clip, time+1))
             queue.append((value, value, time+1))
             queue.append((value-1, clip, time+1)
@@ -56,6 +56,8 @@ def bfs(target):
 ```python
 from collections import deque 
 
+
+# === Define BFS Function === 
 def bfs(target):
     queue = deque([(1,0,0)])
     visited = [False for i in range(target*2+1)]
@@ -66,14 +68,18 @@ def bfs(target):
         if value == target:
             return time 
         else:
+            # === operation 1 : paste the clip board content to the screen ===
             if value+clip<target*2 and not visited[value+clip] :
                 queue.append((value+clip, clip, time+1))
+            # === operation 2 : copy the screen content and overwrite it to the clipboard ===  
             if not stacked[value]:
                 queue.append((value, value, time+1))
                 stacked[value] =True
+            # === operation 3 : remote 1 emoji from the screen === 
             if value>1 and not visited[value-1]:
                 queue.append((value-1, clip, time+1))
 
+# === Get input and print the result === 
 N = int(input())
 print(bfs(N))
 ```
