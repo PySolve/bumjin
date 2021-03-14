@@ -1,10 +1,13 @@
+# === define bitmask operation class===
 class MyBitMask:
     def __init__(self):
         self.memory = 0
 
+    # === set 1 ===
     def add(self, i):
         self.memory |= (1 << i)
     
+    # === set 0 ===
     def remove(self, i):
         self.memory &=  ~(1 << i)
 
@@ -14,22 +17,26 @@ class MyBitMask:
         else:
             print(0)
 
+    # === reverse(xor) ===
     def toggle(self, i):
         self.memory ^=(1<<i)
     
+    # === 11111 11111 11111 11111 ===
     def all(self):
         self.memory = (1<<21)-1
         
+    # === 00000 00000 00000 00000 ===    
     def empty(self):
         self.memory = 0
 
-my_set = MyBitMask()
+bitmask_handler = MyBitMask()
 
+# === commands ===
 import sys 
 N = int(sys.stdin.readline().strip())
 for i in range(N):
     command = sys.stdin.readline().strip().split()
     if len(command)==1:
-        getattr(my_set, command[0])()
+        getattr(bitmask_handler, command[0])()
     else:
-        getattr(my_set, command[0])(int(command[1]))
+        getattr(bitmask_handler, command[0])(int(command[1]))
