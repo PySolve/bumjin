@@ -22,7 +22,7 @@ def topdown(a,b,c):
                                 + topdown(a,b-1, c-1)
                                 - topdown(a,b-1,c))
         else:
-            dp[a][b][c] = (topdown(a-1,b,c)
+            dp[a][b][c] = (topdown(a-1,b,c) 
                                 + topdown(a-1, b-1, c)
                                 + topdown(a-1, b, c-1)
                                 - topdown(a-1, b-1, c-1))

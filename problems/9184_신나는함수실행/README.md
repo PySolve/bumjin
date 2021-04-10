@@ -17,11 +17,13 @@ if a>20 or b > 20 or c > 0:
 재귀함수 w(a,b,c)의 값을 구하는 문제는 다음과 같은 Sub problem 들로 값을 구할 수 있다. 
 
 ```python
-if a>b and b<c:
+if a < b and b < c:
     w(a,b,c) = w(a,b,c-1) + w(a,b-1, c-1) - w(a,b-1,c)
 
 else:
     w(a-1,b,c) + w(a-1, b-1, c) + w(a-1, b, c-1) -  w(a-1, b-1. c-1)
+
+return dp[a][b][c]
 ```
 
 
