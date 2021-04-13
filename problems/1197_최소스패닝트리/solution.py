@@ -1,6 +1,5 @@
 import sys 
 
-
 def find(a):
     if a == parent[a]:
         return a 
@@ -10,11 +9,11 @@ def find(a):
 
 
 def union(a,b):
-    parent_a, parent_b = find(a), find(b)
-    if parent_a < parent_b :
-        parent[parent_b] = parent_a
+    setA, setB = find(a), find(b)
+    if setA < setB :
+        parent[setB] = setA
     else:
-        parent[parent_a] = parent_b
+        parent[setA] = setB
 
 input = sys.stdin.readline
 V, E = map(int, input().strip().split())
