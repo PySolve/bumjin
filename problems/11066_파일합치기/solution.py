@@ -1,48 +1,62 @@
-
+"""
+https://js1jj2sk3.tistory.com/3
+"""
 
 import math
-def solution(lst):
-    N = len(lst)
-    weight =[[0 for i in range(N)] for j in range(N)]
+
+MAX = math.inf
+
+def recur(x, y, cost, summ, dp):
+    if dp[x][y] != MAX:
+        pass 
+    elif x == y :
+        dp[x][y] =  0  
+    elif x+1 ==y :
+        dp[x][y] = cost[x] + cost[y]
+    else:
+        for mid in range(x, y):
+            left = recur(x, mid, cost, summ, dp)
+            right = recur(mid+1, y, cost, summ, dp)
+            dp[x][y] = min(dp[x][y], left + right)
+        dp[x][y] += summ[y] - summ[x]  + cost[x]
+    return dp[x][y]
+
+def solution(cost):
+    N = len(cost)
+    summ = [0 for i in range(N)]
+    for i in range(N):
+        summ[i] = summ[i-1] + cost[i]
     dp = [[math.inf for i in range(N)] for j in range(N)]
-    for i in range(N):
-        dp[i][i] = lst[i]
-        for j in range(N):
-            if abs(i-j) ==1:
-                dp[i][j] = 2*(lst[i] + lst[j])
 
-    for i in range(N):
-        for j in range(i):
-            if weight[0][j-1] ==0:
-                weight[0][j-1] = sum(lst[0:j])
-            if weight[j+1][i-1] ==0:
-                weight[j+1][i-1] = sum(lst[j+1:i])
-            dp[j][i] = min(dp[j][i], (
-                                    dp[0][j-1]
-                                    + dp[j+1][i] 
-                                    + 2 * weight[0][j-1]
-                                    + 2 * lst[j]
-                                    + 2 * weight[j+1][i] 
-                                    + 2 * lst[i]
-                                    )
-                        )       
-    print(lst)
-    for w in weight:
-        print(w)
-    print("------")
-    for v in dp:
-        print(v)
-    return dp[0][-1]
-      
+    return recur(0, N-1, cost, summ, dp)
+    
 
-import unittest 
-class SolutionTest(unittest.TestCase):
-    def test(self):
-        self.assertEqual(solution([40,30,30,50]), 300)
-        self.assertEqual(solution(list(map(int, 
-                            "1 21 3 4 5 35 5 4 3 5 98 21 14 17 32".split())
-                            )), 864)
-
-
+import argparse 
+import sys  
+sys.setrecursionlimit(10**7)
 if __name__ == "__main__":
-    unittest.main()
+    
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--unittest",  action='store_true')
+    parser.add_argument("--acmic", action='store_true')
+    args = parser.parse_args()
+
+    if args.acmic:
+        T = int(input())
+        for i in range(T):
+            N = int(input())
+            cost = list(map(int, input().split()))
+            print(solution(cost))
+
+    if args.unittest:
+        while len(sys.argv)>1:
+            sys.argv.pop() # remove flag
+        import unittest 
+        class SolutionTest(unittest.TestCase):
+            def test(self):
+                self.assertEqual(solution([40,30,30,50]), 300)
+                self.assertEqual(solution(list(map(int, 
+                                    "1 21 3 4 5 35 5 4 3 5 98 21 14 17 32".split())
+                                    )), 864)
+        unittest.main()
